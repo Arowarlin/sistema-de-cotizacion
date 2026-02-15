@@ -1,0 +1,194 @@
+{
+  "configuracion": {
+    "moneda": "USD",
+    "idioma": "es-DO",
+    "formatoFecha": "dd/mm/yyyy",
+    "porcentajeImprevistosDefecto": 10,
+    "vigenciaCotizacionDefecto": "30 días"
+  },
+  "plantillas": {
+    "tiposMantenimiento": [
+      {
+        "id": "preventivo",
+        "nombre": "Preventivo",
+        "descripcion": "Mantenimiento programado para prevenir fallas"
+      },
+      {
+        "id": "correctivo",
+        "nombre": "Correctivo",
+        "descripcion": "Reparación de fallas existentes"
+      },
+      {
+        "id": "mixto",
+        "nombre": "Mixto",
+        "descripcion": "Combinación de preventivo y correctivo"
+      },
+      {
+        "id": "predictivo",
+        "nombre": "Predictivo",
+        "descripcion": "Basado en análisis y monitoreo de condiciones"
+      }
+    ],
+    "actividades": [
+      "Inspección técnica",
+      "Limpieza técnica",
+      "Ajustes y calibración",
+      "Reparaciones menores",
+      "Pruebas de funcionamiento",
+      "Verificación final",
+      "Lubricación",
+      "Reemplazo de componentes"
+    ],
+    "unidadesMedida": [
+      { "id": "pza", "nombre": "Pieza" },
+      { "id": "lt", "nombre": "Litro" },
+      { "id": "kg", "nombre": "Kilogramo" },
+      { "id": "m", "nombre": "Metro" },
+      { "id": "m2", "nombre": "Metro cuadrado" },
+      { "id": "caja", "nombre": "Caja" },
+      { "id": "galón", "nombre": "Galón" },
+      { "id": "otro", "nombre": "Otro" }
+    ],
+    "tiposHerramienta": [
+      { "id": "alquiler", "nombre": "Alquiler" },
+      { "id": "uso", "nombre": "Uso/Depreciación" },
+      { "id": "compra", "nombre": "Compra" }
+    ],
+    "formasPago": [
+      { "id": "efectivo", "nombre": "Efectivo" },
+      { "id": "transferencia", "nombre": "Transferencia Bancaria" },
+      { "id": "cheque", "nombre": "Cheque" },
+      { "id": "50-50", "nombre": "50% Anticipo - 50% Finalización" },
+      { "id": "30-70", "nombre": "30% Anticipo - 70% Finalización" },
+      { "id": "credito-30", "nombre": "Crédito a 30 días" }
+    ]
+  },
+  "ejemploCotizacion": {
+    "datosCliente": {
+      "nombre": "Hotel Paradise Resort",
+      "contacto": "Juan Pérez",
+      "email": "mantenimiento@paradiseresort.com",
+      "telefono": "809-555-0123",
+      "rnc": "123456789",
+      "direccion": "Av. Principal #123, Punta Cana"
+    },
+    "datosPrestador": {
+      "nombre": "Servicios Técnicos Profesionales SRL",
+      "responsable": "Ing. Carlos Martínez",
+      "email": "info@stprofesionales.com",
+      "telefono": "809-555-0456",
+      "rnc": "987654321",
+      "direccion": "Calle Técnica #45, Santo Domingo"
+    },
+    "datosServicio": {
+      "tipoMantenimiento": "mixto",
+      "alcanceServicio": "Mantenimiento preventivo y correctivo del sistema de climatización del hotel, incluyendo inspección de 50 unidades split, limpieza de filtros, verificación de presiones, y reparación de 3 unidades con fallas.",
+      "actividades": [
+        "Inspección técnica",
+        "Limpieza técnica",
+        "Ajustes y calibración",
+        "Reparaciones menores",
+        "Pruebas de funcionamiento",
+        "Verificación final"
+      ],
+      "fechaInicio": "2024-03-01",
+      "plazoEjecucion": "5 días hábiles"
+    },
+    "etapaTecnica": {
+      "honorarios": {
+        "diagnostico": 500,
+        "planificacion": 300,
+        "supervision": 800
+      },
+      "brigada": [
+        {
+          "descripcion": "Técnico especialista en climatización",
+          "horas": 40,
+          "tarifa": 35,
+          "cantidad": 2,
+          "notas": "Certificados HVAC"
+        },
+        {
+          "descripcion": "Ayudante técnico",
+          "horas": 40,
+          "tarifa": 18,
+          "cantidad": 2,
+          "notas": ""
+        }
+      ],
+      "herramientas": [
+        {
+          "nombre": "Manómetros digitales (2 unidades)",
+          "tipo": "alquiler",
+          "costo": 80,
+          "cantidad": 5,
+          "notas": "Por día de uso"
+        },
+        {
+          "nombre": "Bomba de vacío profesional",
+          "tipo": "uso",
+          "costo": 150,
+          "cantidad": 1,
+          "notas": "Depreciación"
+        }
+      ],
+      "materiales": [
+        {
+          "descripcion": "Gas refrigerante R-410A",
+          "unidad": "kg",
+          "precio": 85,
+          "cantidad": 12,
+          "notas": "Cilindro de 25 lbs"
+        },
+        {
+          "descripcion": "Filtros de aire (diversos tamaños)",
+          "unidad": "pza",
+          "precio": 15,
+          "cantidad": 50,
+          "notas": "Reemplazo preventivo"
+        },
+        {
+          "descripcion": "Aceite lubricante sintético",
+          "unidad": "lt",
+          "precio": 45,
+          "cantidad": 4,
+          "notas": "Para compresores"
+        }
+      ]
+    },
+    "etapaOperativa": {
+      "logistica": {
+        "transporte": 350,
+        "movilizacion": 200,
+        "gestionAccesos": 50
+      },
+      "documentacion": {
+        "registro": 150,
+        "informe": 250,
+        "recomendaciones": 100
+      },
+      "administrativos": {
+        "gastosDirectos": 0,
+        "porcentaje": 8
+      }
+    },
+    "imprevistos": {
+      "porcentaje": 10,
+      "notas": "Reservado para reparaciones no detectadas en inspección inicial o componentes adicionales necesarios"
+    },
+    "condiciones": {
+      "vigenciaCotizacion": "30 días",
+      "formaPago": "50-50",
+      "condicionesAdicionales": "El pago del anticipo debe realizarse antes del inicio de los trabajos. La garantía cubre 90 días en mano de obra y materiales instalados.",
+      "notasImprevistos": "Cualquier trabajo adicional será cotizado y aprobado por el cliente antes de su ejecución."
+    }
+  },
+  "tips": {
+    "honorarios": "Los honorarios técnicos suelen ser 15-20% del costo total del servicio",
+    "brigadaTarifa": "Tarifa promedio técnico especializado: $25-40/hora. Ayudante: $15-20/hora",
+    "imprevistos": "Se recomienda 10-15% para mantenimiento preventivo, 15-20% para correctivo",
+    "administrativos": "Gastos administrativos típicos: 5-10% del subtotal",
+    "vigencia": "Cotizaciones típicamente válidas por 30 días para servicios estándar",
+    "formaPago": "50% anticipo + 50% finalización es común en proyectos medianos"
+  }
+}

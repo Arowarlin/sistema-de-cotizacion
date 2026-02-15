@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Cotización - Servicios de Mantenimiento</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="loading-spinner">
+            <div class="spinner"></div>
+            <p>Cargando...</p>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- Header Mejorado -->
+    <header class="header">
+        <div class="header-top">
+            <div class="container">
+                <div class="header-content">
+                    <div class="logo-section">
+                        <div class="logo-circle">
+                            <i class="fas fa-tools"></i>
+                        </div>
+                        <div class="logo-text">
+                            <h1>Sistema de Cotización</h1>
+                            <p>Servicios de Mantenimiento Profesional</p>
+                        </div>
+                    </div>
+                    <div class="header-actions">
+                        <button class="btn-icon" onclick="cambiarTema()" title="Cambiar tema">
+                            <i class="fas fa-moon" id="themeIcon"></i>
+                        </button>
+                        <button class="btn-icon" onclick="mostrarEstadisticas()" title="Estadísticas">
+                            <i class="fas fa-chart-line"></i>
+                        </button>
+                        <button class="btn-secondary" onclick="mostrarHistorial()">
+                            <i class="fas fa-history"></i>
+                            <span class="btn-text">Historial</span>
+                            <span class="badge" id="badgeHistorial">0</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Barra de Progreso -->
+        <div class="progress-bar-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <!-- Indicador de Pasos -->
+        <div class="container">
+            <div class="steps-indicator">
+                <div class="step active" data-step="1">
+                    <div class="step-number">1</div>
+                    <div class="step-label">Datos</div>
+                </div>
+                <div class="step-line"></div>
+                <div class="step" data-step="2">
+                    <div class="step-number">2</div>
+                    <div class="step-label">Servicio</div>
+                </div>
+                <div class="step-line"></div>
+                <div class="step" data-step="3">
+                    <div class="step-number">3</div>
+                    <div class="step-label">Técnica</div>
+                </div>
+                <div class="step-line"></div>
+                <div class="step" data-step="4">
+                    <div class="step-number">4</div>
+                    <div class="step-label">Operativa</div>
+                </div>
+                <div class="step-line"></div>
+                <div class="step" data-step="5">
+                    <div class="step-number">5</div>
+                    <div class="step-label">Totales</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Botones de Acceso Rápido - CORREGIDOS -->
+        <div class="quick-actions">
+            <button class="btn-quick" onclick="cargarPlantilla()">
+                <i class="fas fa-magic"></i>
+                <span>Cargar Ejemplo</span>
+            </button>
+            <button class="btn-quick" onclick="limpiarFormulario()">
+                <i class="fas fa-eraser"></i>
+                <span>Limpiar Todo</span>
+            </button>
+            <button class="btn-quick" onclick="guardarBorrador()">
+                <i class="fas fa-save"></i>
+                <span>Guardar Borrador</span>
+            </button>
+        </div>
+
+        <!-- Sección 1: Datos del Cliente y Prestador -->
+        <section class="card" data-section="1">
+            <div class="card-header">
+                <div class="card-header-content">
+                    <div class="card-header-icon">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <div class="card-header-text">
+                        <h2>Datos del Cliente y Prestador del Servicio</h2>
+                        <p class="card-subtitle">Información de contacto y datos fiscales</p>
+                    </div>
+                </div>
+                <button class="btn-collapse" onclick="toggleSection(1)">
+                    <i class="fas fa-chevron-up"></i>
+                </button>
+            </div>
+            <div class="card-body" id="section1">
+                <div class="grid-2">
+                    <!-- Datos del Cliente -->
+                    <div class="form-section glass-effect">
+                        <div class="section-header">
+                            <h3><i class="fas fa-building"></i> Datos del Cliente</h3>
+                        </div>
+                        <div class="form-group floating-label">
+                            <input type="text" id="clienteNombre" required placeholder=" ">
+                            <label for="clienteNombre">Nombre/Empresa *</label>
+                            <span class="input-icon"><i class="fas fa-building"></i></span>
+                        </div>
+                        <div class="form-group floating-label">
+                            <input type="text" id="clienteContacto" placeholder=" ">
+                            <label for="clienteContacto">Persona de Contacto</label>
+                            <span class="input-icon"><i class="fas fa-user"></i></span>
+                        </div>
+                        <div class="form-group floating-label">
+                            <input type="email" id="clienteEmail" required placeholder=" ">
+                            <label for="clienteEmail">Email *</label>
+                            <span class="input-icon"><i class="fas fa-envelope"></i></span>
+                        </div>
+                        <div class="form-group floating-label">
+                            <input type="tel" id="clienteTelefono" required placeholder=" ">
+                            <label for="clienteTelefono">Teléfono *</label>
+                            <span class="input-icon"><i class="fas fa-phone"></i></span>
+                        </div>
+                        <div class="form-group floating-label">
+                            <input type="text" id="clienteRNC" placeholder=" ">
+                            <label for="clienteRNC">RNC/NIF</label>
+                            <span class="input-icon"><i class="fas fa-id-card"></i></span>
+                        </div>
+                        <div class="form-group floating-label">
+                            <textarea id="clienteDireccion" rows="2" placeholder=" "></textarea>
+                            <label for="clienteDireccion">Dirección</label>
+                            <span class="input-icon"><i class="fas fa-map-marker-alt"></i></span>
+                        </div>
+                    </div>
+
+                    <!-- Datos del Prestador -->
+                    <div class="form-section glass-effect">
+                        <div class="section-header">
+                            <h3><i class="fas fa-hard-hat"></i> Datos del Prestador del Servicio</h3>
+                        </div>
+                        <div class="form-group floating-label">
+                            <input type="text" id="prestadorNombre" required placeholder=" ">
+                            <label for="prestadorNombre">Nombre/Empresa *</label>
+                            <span class="input-icon"><i class="fas fa-building"></i></span>
+                        </div>
+                        <div class="form-group floating-label">
+                            <input type="text" id="prestadorResponsable" required placeholder=" ">
+                            <label for="prestadorResponsable">Técnico Responsable *</label>
+                            <span class="input-icon"><i class="fas fa-user-cog"></i></span>
+                        </div>
+                        <div class="form-group floating-label">
+                            <input type="email" id="prestadorEmail" required placeholder=" ">
+                            <label for="prestadorEmail">Email *</label>
+                            <span class="input-icon"><i class="fas fa-envelope"></i></span>
+                        </div>
+                        <div class="form-group floating-label">
+                            <input type="tel" id="prestadorTelefono" required placeholder=" ">
+                            <label for="prestadorTelefono">Teléfono *</label>
+                            <span class="input-icon"><i class="fas fa-phone"></i></span>
+                        </div>
+                        <div class="form-group floating-label">
+                            <input type="text" id="prestadorRNC" placeholder=" ">
+                            <label for="prestadorRNC">RNC/NIF</label>
+                            <span class="input-icon"><i class="fas fa-id-card"></i></span>
+                        </div>
+                        <div class="form-group floating-label">
+                            <textarea id="prestadorDireccion" rows="2" placeholder=" "></textarea>
+                            <label for="prestadorDireccion">Dirección</label>
+                            <span class="input-icon"><i class="fas fa-map-marker-alt"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección 2: Descripción del Servicio -->
+        <section class="card" data-section="2">
+            <div class="card-header">
+                <div class="card-header-content">
+                    <div class="card-header-icon">
+                        <i class="fas fa-clipboard-list"></i>
+                    </div>
+                    <div class="card-header-text">
+                        <h2>Descripción del Servicio de Mantenimiento</h2>
+                        <p class="card-subtitle">Detalle del tipo de servicio y alcance</p>
+                    </div>
+                </div>
+                <button class="btn-collapse" onclick="toggleSection(2)">
+                    <i class="fas fa-chevron-up"></i>
+                </button>
+            </div>
+            <div class="card-body" id="section2">
+                <div class="form-group">
+                    <label for="tipoMantenimiento">Tipo de Mantenimiento *</label>
+                    <select id="tipoMantenimiento" required class="calc-input">
+                        <option value="">Seleccione...</option>
+                        <option value="preventivo">Preventivo</option>
+                        <option value="correctivo">Correctivo</option>
+                        <option value="mixto">Mixto (Preventivo + Correctivo)</option>
+                        <option value="predictivo">Predictivo</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="alcanceServicio">Alcance del Servicio</label>
+                    <textarea id="alcanceServicio" rows="4" placeholder="Describa detalladamente el alcance del servicio de mantenimiento..."></textarea>
+                    <small>Opcional: Agregue una descripción detallada del servicio</small>
+                </div>
+
+                <div class="form-group">
+                    <label>Actividades a Realizar</label>
+                    <div class="checkbox-group">
+                        <label>
+                            <input type="checkbox" class="actividad" value="inspeccion">
+                            Inspección Técnica
+                        </label>
+                        <label>
+                            <input type="checkbox" class="actividad" value="limpieza">
+                            Limpieza
+                        </label>
+                        <label>
+                            <input type="checkbox" class="actividad" value="ajustes">
+                            Ajustes y Calibración
+                        </label>
+                        <label>
+                            <input type="checkbox" class="actividad" value="reparaciones">
+                            Reparaciones Menores
+                        </label>
+                        <label>
+                            <input type="checkbox" class="actividad" value="pruebas">
+                            Pruebas de Funcionamiento
+                        </label>
+                        <label>
+                            <input type="checkbox" class="actividad" value="verificacion">
+                            Verificación Final
+                        </label>
+                        <label>
+                            <input type="checkbox" class="actividad" value="lubricacion">
+                            Lubricación
+                        </label>
+                        <label>
+                            <input type="checkbox" class="actividad" value="reemplazo">
+                            Reemplazo de Componentes
+                        </label>
+                    </div>
+                </div>
+
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label for="fechaInicio">Fecha de Inicio (Opcional)</label>
+                        <input type="date" id="fechaInicio">
+                    </div>
+                    <div class="form-group">
+                        <label for="plazoEjecucion">Plazo de Ejecución *</label>
+                        <input type="text" id="plazoEjecucion" placeholder="Ej: 5 días hábiles" required>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección 3: Etapa Técnica -->
+        <section class="card" data-section="3">
+            <div class="card-header">
+                <div class="card-header-content">
+                    <div class="card-header-icon">
+                        <i class="fas fa-tools"></i>
+                    </div>
+                    <div class="card-header-text">
+                        <h2>Etapa Técnica</h2>
+                        <p class="card-subtitle">Honorarios, brigada, herramientas y materiales</p>
+                    </div>
+                </div>
+                <button class="btn-collapse" onclick="toggleSection(3)">
+                    <i class="fas fa-chevron-up"></i>
+                </button>
+            </div>
+            <div class="card-body" id="section3">
+                <!-- Honorarios Técnicos -->
+                <h3 class="subsection-title">Honorarios Técnicos</h3>
+                <div class="grid-3">
+                    <div class="form-group">
+                        <label for="honorariosDiagnostico">Diagnóstico Inicial ($)</label>
+                        <input type="number" id="honorariosDiagnostico" step="0.01" min="0" value="0" class="calc-input">
+                    </div>
+                    <div class="form-group">
+                        <label for="honorariosPlanificacion">Planificación ($)</label>
+                        <input type="number" id="honorariosPlanificacion" step="0.01" min="0" value="0" class="calc-input">
+                    </div>
+                    <div class="form-group">
+                        <label for="honorariosSupervision">Supervisión Técnica ($)</label>
+                        <input type="number" id="honorariosSupervision" step="0.01" min="0" value="0" class="calc-input">
+                    </div>
+                </div>
+                <div class="total-line">
+                    <span>Subtotal Honorarios:</span>
+                    <span class="amount" id="subtotalHonorarios">$0.00</span>
+                </div>
+
+                <!-- Brigada de Trabajo -->
+                <h3 class="subsection-title">Brigada de Trabajo</h3>
+                <div id="brigadaContainer"></div>
+                <button type="button" class="btn-add" onclick="agregarBrigada()">
+                    <i class="fas fa-plus"></i>
+                    Agregar Personal
+                </button>
+                <div class="total-line">
+                    <span>Subtotal Brigada:</span>
+                    <span class="amount" id="subtotalBrigada">$0.00</span>
+                </div>
+
+                <!-- Herramientas y Equipos -->
+                <h3 class="subsection-title">Herramientas y Equipos</h3>
+                <div id="herramientasContainer"></div>
+                <button type="button" class="btn-add" onclick="agregarHerramienta()">
+                    <i class="fas fa-plus"></i>
+                    Agregar Herramienta/Equipo
+                </button>
+                <div class="total-line">
+                    <span>Subtotal Herramientas:</span>
+                    <span class="amount" id="subtotalHerramientas">$0.00</span>
+                </div>
+
+                <!-- Materiales e Insumos -->
+                <h3 class="subsection-title">Materiales e Insumos</h3>
+                <div id="materialesContainer"></div>
+                <button type="button" class="btn-add" onclick="agregarMaterial()">
+                    <i class="fas fa-plus"></i>
+                    Agregar Material/Insumo
+                </button>
+                <div class="total-line">
+                    <span>Subtotal Materiales:</span>
+                    <span class="amount" id="subtotalMateriales">$0.00</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección 4: Etapa Operativa y Administrativa -->
+        <section class="card" data-section="4">
+            <div class="card-header">
+                <div class="card-header-content">
+                    <div class="card-header-icon">
+                        <i class="fas fa-tasks"></i>
+                    </div>
+                    <div class="card-header-text">
+                        <h2>Etapa Operativa y Administrativa</h2>
+                        <p class="card-subtitle">Logística, documentación y gastos administrativos</p>
+                    </div>
+                </div>
+                <button class="btn-collapse" onclick="toggleSection(4)">
+                    <i class="fas fa-chevron-up"></i>
+                </button>
+            </div>
+            <div class="card-body" id="section4">
+                <!-- Logística -->
+                <h3 class="subsection-title">Logística</h3>
+                <div class="grid-3">
+                    <div class="form-group">
+                        <label for="costoTransporte">Transporte ($)</label>
+                        <input type="number" id="costoTransporte" step="0.01" min="0" value="0" class="calc-input">
+                    </div>
+                    <div class="form-group">
+                        <label for="costoMovilizacion">Movilización de Personal ($)</label>
+                        <input type="number" id="costoMovilizacion" step="0.01" min="0" value="0" class="calc-input">
+                    </div>
+                    <div class="form-group">
+                        <label for="costoGestionAccesos">Gestión de Accesos ($)</label>
+                        <input type="number" id="costoGestionAccesos" step="0.01" min="0" value="0" class="calc-input">
+                    </div>
+                </div>
+                <div class="total-line">
+                    <span>Subtotal Logística:</span>
+                    <span class="amount" id="subtotalLogistica">$0.00</span>
+                </div>
+
+                <!-- Documentación -->
+                <h3 class="subsection-title">Documentación</h3>
+                <div class="grid-3">
+                    <div class="form-group">
+                        <label for="costoRegistroActividades">Registro de Actividades ($)</label>
+                        <input type="number" id="costoRegistroActividades" step="0.01" min="0" value="0" class="calc-input">
+                    </div>
+                    <div class="form-group">
+                        <label for="costoInformeTecnico">Informe Técnico ($)</label>
+                        <input type="number" id="costoInformeTecnico" step="0.01" min="0" value="0" class="calc-input">
+                    </div>
+                    <div class="form-group">
+                        <label for="costoRecomendaciones">Recomendaciones Post-Mantenimiento ($)</label>
+                        <input type="number" id="costoRecomendaciones" step="0.01" min="0" value="0" class="calc-input">
+                    </div>
+                </div>
+                <div class="total-line">
+                    <span>Subtotal Documentación:</span>
+                    <span class="amount" id="subtotalDocumentacion">$0.00</span>
+                </div>
+
+                <!-- Gastos Administrativos -->
+                <h3 class="subsection-title">Gastos Administrativos</h3>
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label for="gastosAdministrativos">Monto Fijo ($)</label>
+                        <input type="number" id="gastosAdministrativos" step="0.01" min="0" value="0" class="calc-input">
+                        <small>Gastos administrativos directos</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="porcentajeAdministrativo">O Porcentaje sobre Subtotal (%)</label>
+                        <input type="number" id="porcentajeAdministrativo" step="0.01" min="0" max="100" value="0" class="calc-input">
+                        <small>Se calculará sobre el subtotal general</small>
+                    </div>
+                </div>
+                <div class="total-line">
+                    <span>Subtotal Administrativos:</span>
+                    <span class="amount" id="resumenAdministrativos">$0.00</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección 5: Imprevistos y Totales -->
+        <section class="card" data-section="5">
+            <div class="card-header">
+                <div class="card-header-content">
+                    <div class="card-header-icon">
+                        <i class="fas fa-calculator"></i>
+                    </div>
+                    <div class="card-header-text">
+                        <h2>Imprevistos y Totales</h2>
+                        <p class="card-subtitle">Cálculo final de la cotización</p>
+                    </div>
+                </div>
+                <button class="btn-collapse" onclick="toggleSection(5)">
+                    <i class="fas fa-chevron-up"></i>
+                </button>
+            </div>
+            <div class="card-body" id="section5">
+                <!-- Imprevistos -->
+                <h3 class="subsection-title">Imprevistos y Varios</h3>
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label for="porcentajeImprevistos">Porcentaje de Contingencia (%)</label>
+                        <input type="number" id="porcentajeImprevistos" step="0.01" min="0" max="100" value="10" class="calc-input">
+                        <small>Recomendado: 10-15%</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="notasImprevistos">Notas sobre Imprevistos</label>
+                        <textarea id="notasImprevistos" rows="3" placeholder="Describa qué cubre este porcentaje..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Condiciones -->
+                <h3 class="subsection-title">Condiciones de la Cotización</h3>
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label for="vigenciaCotizacion">Vigencia de la Cotización</label>
+                        <input type="text" id="vigenciaCotizacion" value="30 días">
+                        <small>Días que la cotización permanece válida</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="formaPago">Forma de Pago</label>
+                        <select id="formaPago">
+                            <option value="">Seleccione...</option>
+                            <option value="efectivo">Efectivo</option>
+                            <option value="transferencia">Transferencia Bancaria</option>
+                            <option value="cheque">Cheque</option>
+                            <option value="50-50">50% Anticipo - 50% Finalización</option>
+                            <option value="30-70">30% Anticipo - 70% Finalización</option>
+                            <option value="credito-30">Crédito a 30 días</option>
+                        </select>
+                        <small>Seleccione la forma de pago preferida</small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="condicionesAdicionales">Condiciones Adicionales</label>
+                    <textarea id="condicionesAdicionales" rows="3" placeholder="Términos y condiciones adicionales..."></textarea>
+                </div>
+
+                <!-- Resumen de Totales -->
+                <div class="totales-resumen">
+                    <h3>Resumen de Totales</h3>
+                    <div class="resumen-item">
+                        <span>Honorarios Técnicos:</span>
+                        <span id="resumenHonorarios">$0.00</span>
+                    </div>
+                    <div class="resumen-item">
+                        <span>Brigada de Trabajo:</span>
+                        <span id="resumenBrigada">$0.00</span>
+                    </div>
+                    <div class="resumen-item">
+                        <span>Herramientas y Equipos:</span>
+                        <span id="resumenHerramientas">$0.00</span>
+                    </div>
+                    <div class="resumen-item">
+                        <span>Materiales e Insumos:</span>
+                        <span id="resumenMateriales">$0.00</span>
+                    </div>
+                    <div class="resumen-item">
+                        <span>Logística:</span>
+                        <span id="resumenLogistica">$0.00</span>
+                    </div>
+                    <div class="resumen-item">
+                        <span>Documentación:</span>
+                        <span id="resumenDocumentacion">$0.00</span>
+                    </div>
+                    <div class="resumen-item">
+                        <span>Gastos Administrativos:</span>
+                        <span id="subtotalAdministrativos">$0.00</span>
+                    </div>
+                    <div class="resumen-item subtotal-line">
+                        <span><strong>SUBTOTAL GENERAL:</strong></span>
+                        <span id="subtotalGeneral">$0.00</span>
+                    </div>
+                    <div class="resumen-item">
+                        <span>Imprevistos (<span id="porcentajeImprevistosDisplay">10</span>%):</span>
+                        <span id="montoImprevistos">$0.00</span>
+                    </div>
+                    <div class="resumen-item total-line">
+                        <span><strong>TOTAL GENERAL:</strong></span>
+                        <span id="totalGeneral">$0.00</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Botones de Acción - CORREGIDOS -->
+        <div class="action-buttons">
+            <button type="button" class="btn-success" onclick="guardarCotizacion()">
+                <i class="fas fa-save"></i>
+                Guardar Cotización
+            </button>
+            <button type="button" class="btn-primary" onclick="generarPDF()">
+                <i class="fas fa-file-pdf"></i>
+                Generar PDF
+            </button>
+            <button type="button" class="btn-secondary" onclick="limpiarFormulario()">
+                <i class="fas fa-eraser"></i>
+                Nueva Cotización
+            </button>
+        </div>
+    </div>
+
+    <!-- Modal de Historial -->
+    <div id="modalHistorial" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-history"></i> Historial de Cotizaciones</h2>
+                <span class="close" onclick="cerrarHistorial()">&times;</span>
+            </div>
+            <div class="modal-body" id="historialBody">
+                <p>Cargando...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts del Sistema - ORDEN CORRECTO -->
+    <script src="api-client.js"></script>
+    <script src="db-config.js"></script>
+    <script src="database-enhanced.js"></script>
+    <script src="calculations.js"></script>
+    <script src="app.js"></script>
+    <script src="app-improved.js"></script>
+    <script src="guardar-cotizacion.js"></script>
+</body>
+</html>
